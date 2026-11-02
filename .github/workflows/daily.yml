@@ -1,1 +1,28 @@
+name: Daily Rubika Message
 
+on:
+  schedule:
+    - cron: "0 13 * * *"
+      timezone: "Asia/Tehran"
+  workflow_dispatch:
+
+jobs:
+  send-message:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Send Rubika message
+        env:
+          RUBIKA_TOKEN: ${{ secrets.RUBIKA_TOKEN }}
+        run: python bot.py
